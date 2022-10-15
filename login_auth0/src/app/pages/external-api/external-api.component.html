@@ -1,0 +1,47 @@
+<div class="container mt-2">
+ 
+
+<h1>Testes na API</h1>
+<div class="container mt-5">
+  <p>1. Mitigar Broken Authentication e Broken Access Control através da implementação de OAuth;</p>
+  <p>2. Mitigar Man In The Middle/Sniffing através da implementação de comunicação via HTTPS;</p>
+  
+  <p> - Acesso ao bando de dados com OAuth e HTTPS.</p>
+    <div>
+      
+      <button
+          class="btn btn-primary mb-4"
+          [disabled]="!audience"
+          (click)="pingApi()">
+          Buscar todos os Protudos
+      </button>
+    </div>
+    <br/>
+  <p>3. Mitigar Code Injection através da implementação de validação de campos de entrada e a utilização de Prepared Statements nas comunicações com o Banco de Dados;</p>
+  <p> - Implementado validação no campo de entrada para evitar SQL INJECTOR</p>
+  <p> - Alteração da função 'getProductById' no arquivo 'db.js' do projeto de API utilizando Prepared Statements</p>
+    <div >
+      <input type="text" class="mb-3 col-4" [(ngModel)]="idBusca" placeholder="Id do Produto" aria-label="idProduct" aria-describedby="basic-addon1"> <br/>
+      <button
+        class="btn btn-primary mb-5"
+        [disabled]="!audience"
+        (click)="getById(idBusca)">
+        Buscar Por ID
+      </button>
+    </div>
+
+    <p>4. Mitigar Brute Force/Dictionary Attack através da implementação de RateLimit na API;</p>  
+    <p> - Implementado no 'app.ja, a partir da linha 12.'</p>
+
+
+    <div class="result-block-container" *ngIf="responseJson">
+      <div class="result-block" [ngClass]="{ show: !!responseJson }">
+        <h6 class="muted">Result</h6>
+        <pre>
+          <code class="js rounded" [highlight]="responseJson"></code>
+        </pre>
+      </div>
+    </div>
+
+  </div>
+</div>
