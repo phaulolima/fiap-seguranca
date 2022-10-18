@@ -57,7 +57,7 @@ app.get('/products', checkJwt, checkScopes, async (req, res, next) => {
     res.status(200).json(resp);
 });
 
-app.post('/products', async (req, res, next) => { 
+app.post('/products', checkJwt, checkScopes, async (req, res, next) => { 
 
     try{
         var name = req.body.name;
@@ -98,7 +98,7 @@ app.get('/products/:id', checkJwt, checkScopes, async (req, res, next) => {
     }
 });
 
-app.put('/products/:id', async (req, res, next) => { 
+app.put('/products/:id', checkJwt, checkScopes, async (req, res, next) => { 
 
     try{
         var id = req.params.id;
@@ -117,7 +117,7 @@ app.put('/products/:id', async (req, res, next) => {
     }
 });
 
-app.delete('/products/:id', async (req, res, next) => {
+app.delete('/products/:id', checkJwt, checkScopes, async (req, res, next) => {
 
     try{
         var id = req.params.id;
