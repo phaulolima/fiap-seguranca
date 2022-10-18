@@ -29,17 +29,7 @@ async function getAllProducts(){
     return rows;
 }
 
-/*
-async function getProductById(id){
-    const conn = await connect();
-    const query = `SELECT * FROM products WHERE id = "${id}";`;
-    console.log(`Executando query: ${query}`);
-    const [rows, fields] = await connection.execute(query);
-    return rows;
-}
-*/
-
-/* Utilizar Prepared Statements ao invés de concatenação de query */
+/* 3 - UTILIZAR PREPARED STATEMENTS AO INVÉS DE CONCATENAÇÃO DE QUERY */
 
 async function getProductById(id){
     const conn = await connect();
@@ -61,39 +51,42 @@ async function getProductById(id){
 async function updateProductById(id, name, description, value){
     try{
         const conn = await connect();
-    
-        const query = `UPDATE products SET name = "${name}", description = "${description}", value = ${value} WHERE id = "${id}";`;
+
+        const query = `UPDATE products SET name = ?, description = ?, value = ? WHERE id = ?;`;
         console.log(`Executando query: ${query}`);
+        console.log(`Executando query usando "Prepared Statements": ${query}`);
         
-        const [rows] = await conn.execute(query);
+        const [rows] = await conn.query(query, [name, description, value, id]);
         return rows;
     }catch(err){
-        throw {code: 500, message: 'Erro inesperado ao tentar cadastrar usuário'};
+        throw {code: 500, message: 'Erro inesperado ao tentar cadastrar um produto'};
     }
 }
 
 async function deleteProductById(id){
     const conn = await connect();
     
-    const query = `DELETE FROM products WHERE id = "${id}";`;
+    const query = `DELETE FROM products WHERE id = ?;`;
     console.log(`Executando query: ${query}`);
+    console.log(`Executando query usando "Prepared Statements": ${query}`);
 
-    await connection.execute(query);
+    await connection.query(query, [id])
 }
 
 async function insertProduct(name, description, value){
     const conn = await connect();
 
-    const query = `INSERT INTO products(id, name, description, value) VALUES ("${randomUUID()}", "${name}", "${description}", ${value});`;
+    const query = `INSERT INTO products(id, name, description, value) VALUES ("${randomUUID()}", "?", "?", "?");`;
     console.log(`Executando query: ${query}`);
+    console.log(`Executando query usando "Prepared Statements": ${query}`);
 
     try{
-        await connection.execute(query);
+        await connection.query(query, [name, description, value]);
     }catch(err){
         if(err.errno === 1062){
             throw {code: 400, message: 'Já existe um producte cadastrado com este usuário!'};
         }else{
-            throw {code: 500, message: 'Erro inesperado ao tentar cadastrar usuário'};
+            throw {code: 500, message: 'Erro inesperado ao tentar cadastrar produto'};
         }
     }
 }
